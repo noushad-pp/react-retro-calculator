@@ -1,4 +1,7 @@
-Base-react-web is a comprehensive starter kit for rapid application development using React used in my projects. 
+#React Retro online calculator
+React calculator is an application developed using React-Redux-HTML5-CSS3-SASS frameworks which tries to implement a retro calculator functionalities and to host it online.
+
+##setup
 
 1. **One command to get started** - Type `npm start` to start development in your default browser.
 2. **Automated production build** - Type `npm run build` to do all this:
