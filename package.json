@@ -2,7 +2,7 @@
   "name": "react-calculator",
   "version": "0.1.0",
   "description": "Online Retro Calculator using ReactJs-Redux, HTML5, CSS3, SASS",
-  "homepage": "https://noushad-pp.github.io/react-calculator",
+  "homepage": "https://noushad-pp.github.io/react-calculator/",
   "engines": {
     "npm": ">=3"
   },
