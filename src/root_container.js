@@ -10,7 +10,6 @@ ReactGA.initialize("UA-123906240-1");
 function logPageView() {
     ReactGA.pageview(window.location.pathname + window.location.search);
 }
-
 export default class Root extends Component {
     render() {
         const { store, history } = this.props;
