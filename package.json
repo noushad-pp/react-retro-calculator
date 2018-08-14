@@ -2,6 +2,7 @@
   "name": "react-calculator",
   "version": "0.1.0",
   "description": "Online Retro Calculator using ReactJs-Redux, HTML5, CSS3, SASS",
+  "homepage": "http://noushad-pp.github.io/react-calculator",
   "engines": {
     "npm": ">=3"
   },
@@ -24,7 +25,9 @@
     "test:cover:CI": "npm run test:CI -- --coverage && cat ./coverage/lcov.info | node_modules/coveralls/bin/coveralls.js",
     "test:watch": "jest --watch",
     "open:cover": "npm run test:cover && opn ./coverage/lcov-report/index.html",
-    "analyze-bundle": "babel-node ./tools/analyzeBundle.js"
+    "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
+    "predeploy": "npm run build",
+    "deploy": "npm run predeploy && gh-pages -d build"
   },
   "author": "Noushad PP",
   "license": "MIT",
