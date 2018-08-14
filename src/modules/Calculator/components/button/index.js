@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 class Button extends Component {
     handleClick = () => {
-        this.props.clickHandler && this.props.clickHandler(this.props.name, this.props.operation);
+        this.props.clickHandler(this.props.name, this.props.operation);
     };
 
     render() {

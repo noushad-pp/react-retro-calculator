@@ -39,14 +39,14 @@ class Calculator extends Component {
         this.props.actions.pageChanged(CONSTANTS.appPages.calculator);
     }
 
-    handleClick = buttonName => {
+    handleClick = (buttonName, operation) => {
         this.setState(calculate(this.state, buttonName));
     };
 
     render() {
         return (
             <div className="CalculatorContainer flex-column flex-center full-flex pad-30">
-                <div className="flex-column pad-10 flex-jc calculator">
+                <div className="flex-column flex-jc calculator">
                     <div className="flex-row flex-jsb solarContainer b-pad-5">
                         <div className="brandName full-flex font-md is-font-bold t-pad-10 l-pad-15">CASIO</div>
                         <div className="solarPanelContainer full-flex flex-ac flex-column">
@@ -55,7 +55,7 @@ class Calculator extends Component {
                         </div>
                     </div>
                     <div className="flex-column displayContainer">
-                        <Display value={this.state.next || this.state.total || "0"} />
+                        <Display value={this.state.next || this.state.total || 0} />
                     </div>
                     <div className="flex-column buttonPanelContainer">
                         <ButtonPanel clickHandler={this.handleClick} />

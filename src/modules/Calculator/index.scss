@@ -2,7 +2,41 @@
 
 .CalculatorContainer {
     .calculator {
-        background-color: $grey-3;
+        position: relative;
+        background-color: tint($grey-3, 40%);
+
+        &:before {
+            height: 20px;
+            content: "";
+            z-index: -1;
+            background-color: tint($grey-3, 20%);
+            position: absolute;
+            top: -10px;
+            left: -11px;
+            right: -10px;
+            width: 100%;
+            padding-left: 10px;
+            padding-right: 10px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0px -2px 5px shade($grey-3, 40%);
+        }
+
+        &:after {
+            box-shadow: -3px 5px 6px shade($grey-3, 20%);
+            padding-left: 10px;
+            height: calc(100% + 10px);
+            content: "";
+            z-index: -1;
+            background-color: $grey-3;
+            position: absolute;
+            top: 0;
+            left: -10px;
+            bottom: -10px;
+            right: -10px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
 
         .solarContainer {
             .solarPanelContainer {
@@ -34,11 +68,16 @@
 
                 button {
                     cursor: pointer;
-                    width: 45px;
+                    width: 40px;
                     font-size: 20px;
                     background-color: $grey;
                     color:white;
                     border: none;
+                    border-top-left-radius: 5px;
+                    border-top-right-radius: 5px;
+                    border-bottom-left-radius: 8px;
+                    border-bottom-right-radius: 8px;
+                    box-shadow: 1px 2px 0 tint($grey-1, 10%);
                 }
 
                 &.small {
