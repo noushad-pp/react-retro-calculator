@@ -54,7 +54,6 @@ class Calculator extends Component {
         const { calculator_details } = this.props;
         let result = calculate(buttonName, operation, calculator_details);
         this.props.actions.setCalculatorState(result);
-        // this.setState(calculate(this.state, buttonName));
     };
 
     render() {

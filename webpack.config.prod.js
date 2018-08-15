@@ -92,10 +92,10 @@ export default {
 				test: /\.[ot]tf(\?v=\d+.\d+.\d+)?$/,
 				use: [
 					{
-						loader: 'url-loader',
+						loader: 'file-loader',
 						options: {
 							limit: 10000,
-							mimetype: 'application/octet-stream',
+							// mimetype: 'application/octet-stream',
 							name: '[name].[ext]'
 						}
 					}

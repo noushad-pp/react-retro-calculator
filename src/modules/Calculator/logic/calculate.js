@@ -27,7 +27,7 @@ function addDigit(result_state, digit) {
     let message = result_state.message;
     if (changing_operand.toString() === "0" && digit !== ".") {
         changing_operand = [digit];
-    } else {
+    } else if (changing_operand.length < 9) {
         changing_operand.push(digit);
     }
 
@@ -152,8 +152,8 @@ function compute(result_state) {
     }
 
     if (!error && result) {
-        display_text = result;
-        operand_1 = result.toString().substring(0, 9).split("");
+        display_text = result.toString().substring(0, 9);
+        operand_1 = display_text.split("");
         operand_2 = [];
     }
 
