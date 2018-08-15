@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
 
 import Display from "./components/display";
 import ButtonPanel from "./components/buttonpanel";
-import calculate from "./logic/calculate";
+// import calculate from "./logic/calculate";
+import calculate from "./logic/calculate.1";
 
+import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
 
 import * as CONSTANTS from '../../data/config/constants';
 import * as pageActions from '../../data/redux/page_details/actions';
+import * as calculatorActions from '../../data/redux/calculator_details/actions';
 
 function mapStateToProps(state) {
     return {
@@ -21,7 +25,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(Object.assign({}, pageActions), dispatch)
+        actions: bindActionCreators(Object.assign({}, pageActions, calculatorActions), dispatch)
     };
 }
 
@@ -39,13 +43,27 @@ class Calculator extends Component {
         this.props.actions.pageChanged(CONSTANTS.appPages.calculator);
     }
 
+    componentWillReceiveProps(nxtProps) {
+        if (nxtProps.calculator_details !== this.props.calculator_details) {
+            if (nxtProps.calculator_details.message !== this.props.calculator_details.message) {
+                toast(nxtProps.calculator_details.message);
+            }
+        }
+    }
+
     handleClick = (buttonName, operation) => {
-        this.setState(calculate(this.state, buttonName));
+        const { calculator_details } = this.props;
+        let result = calculate(buttonName, operation, calculator_details);
+        this.props.actions.setCalculatorState(result);
+        // this.setState(calculate(this.state, buttonName));
     };
 
     render() {
+        const { calculator_details } = this.props;
+
         return (
             <div className="CalculatorContainer flex-column flex-center full-flex pad-30">
+                <ToastContainer autoClose={1500}/>
                 <div className="flex-column flex-jc calculator t-pad-5">
                     <div className="shadows">
                         <div className="shadowLines leftBorderLine">&nbsp;</div>
@@ -61,7 +79,7 @@ class Calculator extends Component {
                         </div>
                     </div>
                     <div className="flex-column displayContainer b-mrgn-15">
-                        <Display value={this.state.next || this.state.total || 0} />
+                        <Display value={calculator_details.display_text} power={calculator_details.power} />
                     </div>
                     <div className="flex-column buttonPanelContainer b-pad-10">
                         <ButtonPanel clickHandler={this.handleClick} />

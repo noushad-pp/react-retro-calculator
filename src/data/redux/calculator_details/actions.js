@@ -1,10 +1,10 @@
 import actionTypes from '../action_types';
 
-export function buttonPressed(button) {
+export function setCalculatorState(state) {
     return function (dispatch) {
         dispatch({
-            type: actionTypes.USER_LOGIN,
-            payload: button
+            type: actionTypes.SET_STATE,
+            payload: state
         });
     };
 }
