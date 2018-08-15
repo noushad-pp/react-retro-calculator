@@ -2,6 +2,8 @@
 React calculator is an application developed using React-Redux-HTML5-CSS3-SASS frameworks which tries to implement a retro calculator functionalities and to host it online.
 
 # [Demo](https://noushad-pp.github.io/react-calculator)
+![alt text](https://res.cloudinary.com/noushadpp/image/upload/v1534345765/personal/calculator.png)
+
 
 ## setup
 

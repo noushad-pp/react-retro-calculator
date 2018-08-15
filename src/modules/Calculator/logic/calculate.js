@@ -25,7 +25,7 @@ function addDigit(result_state, digit) {
     //find which operand and push incoming digit to operand value array
     let changing_operand = [...result_state[`operand_${result_state.curr_stage + 1}`]];
     let message = result_state.message;
-    if (changing_operand.toString() === "0") {
+    if (changing_operand.toString() === "0" && digit !== ".") {
         changing_operand = [digit];
     } else {
         changing_operand.push(digit);
@@ -115,11 +115,13 @@ function compute(result_state) {
     let message = result_state.message;
     let operand_1 = [...result_state.operand_1];
     let operand_2 = [...result_state.operand_2];
+    let curr_stage = [...result_state.curr_stage];
+    let operator = [...result_state.operator];
     let var_1 = parseFloat(operand_1.join(""));
     let var_2 = parseFloat(operand_2.join(""));
     let error = false;
 
-    if (var_1 && var_2 && operand_1 && result_state.operator && operand_2) {
+    if ((var_1 || var_1 === 0) && (var_2 || var_2 === 0) && operand_1 && result_state.operator && operand_2) {
         switch (result_state.operator) {
             case operations.ADDITION:
                 result = var_1 + var_2;
@@ -142,6 +144,8 @@ function compute(result_state) {
                     error = true;
                     operand_1 = [];
                     operand_2 = [];
+                    curr_stage = 0;
+                    operator = undefined;
                 }
                 break;
         }
@@ -157,6 +161,8 @@ function compute(result_state) {
         ...result_state,
         operand_1,
         operand_2,
+        curr_stage,
+        operator,
         result,
         display_text,
         message
@@ -176,18 +182,21 @@ export default function calculate(buttonName, operation, state) {
         }
     } else if (buttonName || buttonName === 0) {
         switch (operation) {
-            case operations.POWER_OFF:
+            case operations.POWER_OFF: {
                 result_state = resetState(result_state, true);
                 result_state.power = false;
                 break;
+            }
 
-            case operations.ALL_CLEAR:
+            case operations.ALL_CLEAR: {
                 result_state = resetState(result_state, true);
                 break;
+            }
 
-            case operations.CLEAR:
+            case operations.CLEAR: {
                 result_state = resetState(result_state, false);
                 break;
+            }
 
             case operations.DIGIT: {
                 let val = parseInt(buttonName, 10);
@@ -195,23 +204,31 @@ export default function calculate(buttonName, operation, state) {
                 break;
             }
 
-            case operations.FLOAT:
-                if ((result_state.curr_stage === 0 && result_state.operand_1.indexOf(".") === -1) || (result_state.curr_stage === 1 && result_state.operand_2.indexOf(".") === -1)) {
+            case operations.FLOAT: {
+                let changing_operand = [...result_state[`operand_${result_state.curr_stage + 1}`]];
+                if (changing_operand.indexOf(".") === -1) {
+                    if (changing_operand.length === 0 || changing_operand.toString() === "0") {
+                        result_state = addDigit(result_state, 0);
+                    }
                     result_state = addDigit(result_state, ".");
                 }
                 break;
+            }
 
-            case operations.MODULUS:
+            case operations.MODULUS: {
                 result_state = convertToPercentage(result_state);
                 break;
+            }
 
-            case operations.SQUARE_ROOT:
+            case operations.SQUARE_ROOT: {
                 result_state = convertToSquareroot(result_state);
                 break;
+            }
 
-            case operations.SIGN_CHANGE:
+            case operations.SIGN_CHANGE: {
                 result_state = negateOperand(result_state);
                 break;
+            }
 
             case operations.MEM_RECORD: {
                 if (result_state.operand_1.length > 0 && result_state.operand_1.toString() !== '-') {
@@ -220,29 +237,34 @@ export default function calculate(buttonName, operation, state) {
                 break;
             }
 
-            case operations.MEM_CLEAR:
+            case operations.MEM_CLEAR: {
                 result_state.memory_var = undefined;
                 break;
+            }
 
-            case operations.MEM_ADD:
+            case operations.MEM_ADD: {
                 result_state = memAction('add', result_state);
                 break;
+            }
 
-            case operations.MEM_SUBSTRACT:
+            case operations.MEM_SUBSTRACT: {
                 result_state = memAction('sub', result_state);
                 break;
+            }
 
-            case operations.COMPUTE:
+            case operations.COMPUTE: {
                 result_state = compute(result_state);
                 break;
+            }
 
-            default:
+            default: {
                 result_state.curr_stage = 1;
                 if (result_state.operand_1.length > 0 && result_state.operand_2.length > 0 && result_state.operator) {
                     result_state = compute(result_state);
                 }
                 result_state.operator = operation;
                 break;
+            }
         }
     }
 
