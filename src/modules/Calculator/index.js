@@ -6,8 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 import Display from "./components/display";
 import ButtonPanel from "./components/buttonpanel";
-// import calculate from "./logic/calculate";
-import calculate from "./logic/calculate.1";
+import calculate from "./logic/calculate";
 
 import 'react-toastify/dist/ReactToastify.css';
 import './index.scss';
@@ -79,7 +78,7 @@ class Calculator extends Component {
                         </div>
                     </div>
                     <div className="flex-column displayContainer b-mrgn-15">
-                        <Display value={calculator_details.display_text} power={calculator_details.power} />
+                        <Display value={calculator_details.display_text} power={calculator_details.power} memory={calculator_details.memory_var}/>
                     </div>
                     <div className="flex-column buttonPanelContainer b-pad-10">
                         <ButtonPanel clickHandler={this.handleClick} />

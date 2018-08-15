@@ -1,147 +1,250 @@
-import Big from "big.js";
+import { operations } from '../../../data/config/constants';
 
-import operate from "./operate";
-import isNumber from "./isNumber";
+function joinOpearandArray(arr) {
+    return arr.join("");
+}
 
-/**
- * Given a button name and a calculator data object, return an updated
- * calculator data object.
- *
- * Calculator data object contains:
- *   total:String      the running total
- *   next:String       the next number to be operated on with the total
- *   operation:String  +, -, etc.
- */
-export default function calculate(obj, buttonName) {
-    if (buttonName === "AC") {
-        return {
-            total: null,
-            next: null,
-            operation: null,
-        };
-    }
-
-    if (isNumber(buttonName)) {
-        if (buttonName === "0" && obj.next === "0") {
-            return {};
-        }
-        // If there is an operation, update next
-        if (obj.operation) {
-            if (obj.next) {
-                return {
-                    next: obj.next + buttonName
-                };
-            }
-            return {
-                next: buttonName
-            };
-        }
-        // If there is no operation, update next and clear the value
-        if (obj.next) {
-            return {
-                next: obj.next + buttonName,
-                total: null,
-            };
-        }
-        return {
-            next: buttonName,
-            total: null,
-        };
-    }
-
-    if (buttonName === "%") {
-        if (obj.operation && obj.next) {
-            const result = operate(obj.total, obj.next, obj.operation);
-            return {
-                total: Big(result)
-                    .div(Big("100"))
-                    .toString(),
-                next: null,
-                operation: null,
-            };
-        }
-        if (obj.next) {
-            return {
-                next: Big(obj.next)
-                    .div(Big("100"))
-                    .toString(),
-            };
-        }
-        return {};
-    }
-
-    if (buttonName === ".") {
-        if (obj.next) {
-            // ignore a . if the next number already has one
-            if (obj.next.includes(".")) {
-                return {};
-            }
-            return {
-                next: obj.next + "."
-            };
-        }
-        return {
-            next: "0."
-        };
-    }
-
-    if (buttonName === "=") {
-        if (obj.next && obj.operation) {
-            return {
-                total: operate(obj.total, obj.next, obj.operation),
-                next: null,
-                operation: null,
-            };
-        } else {
-            // '=' with no operation, nothing to do
-            return {};
-        }
-    }
-
-    if (buttonName === "+/-") {
-        if (obj.next) {
-            return {
-                next: (-1 * parseFloat(obj.next)).toString()
-            };
-        }
-        if (obj.total) {
-            return {
-                total: (-1 * parseFloat(obj.total)).toString()
-            };
-        }
-        return {};
-    }
-
-    // Button must be an operation
-
-    // When the user presses an operation button without having entered
-    // a number first, do nothing.
-    // if (!obj.next && !obj.total) {
-    //   return {};
-    // }
-
-    // User pressed an operation button and there is an existing operation
-    if (obj.operation) {
-        return {
-            total: operate(obj.total, obj.next, obj.operation),
-            next: null,
-            operation: buttonName,
-        };
-    }
-
-    // no operation yet, but the user typed one
-
-    // The user hasn't typed a number yet, just save the operation
-    if (!obj.next) {
-        return {
-            operation: buttonName
-        };
-    }
-
-    // save the operation and shift 'next' into 'total'
-    return {
-        total: obj.next,
-        next: null,
-        operation: buttonName,
+function resetState(resultState, memory_clear = false) {
+    //second parameter memory_clear differentiate between C and AC buttons
+    let state = {
+        ...resultState,
+        display_text: 0,
+        curr_stage: 0,
+        operand_1: [0],
+        operand_2: [],
+        result: undefined,
+        operation: undefined,
+        memory_var: memory_clear ? undefined : resultState.memory_var,
+        float_enabled: false,
+        sign_negated: false
     };
+    return state;
+}
+
+function addDigit(result_state, digit) {
+    //find which operand and push incoming digit to operand value array
+    let changing_operand = [...result_state[`operand_${result_state.curr_stage + 1}`]];
+    let message = result_state.message;
+    if (changing_operand.toString() === "0") {
+        changing_operand = [digit];
+    } else {
+        changing_operand.push(digit);
+    }
+
+    let state = {
+        ...result_state,
+        [`operand_${result_state.curr_stage + 1}`]: changing_operand,
+        display_text: joinOpearandArray(changing_operand),
+        message: message
+    };
+    return state;
+}
+
+function convertToPercentage(result_state) {
+    let changing_operand = [...result_state[`operand_${result_state.curr_stage + 1}`]];
+    if (changing_operand.length && changing_operand !== ['-']) {
+        let val = parseFloat(changing_operand.join(""));
+        changing_operand = (val * 0.01).toString().substring(0, 9).split("");
+    }
+    return {
+        ...result_state,
+        [`operand_${result_state.curr_stage + 1}`]: changing_operand,
+        display_text: joinOpearandArray(changing_operand)
+    };
+}
+
+function convertToSquareroot(result_state) {
+    let changing_operand = [...result_state[`operand_${result_state.curr_stage + 1}`]];
+    if (changing_operand.length && changing_operand !== ['-']) {
+        let val = parseFloat(changing_operand.join(""));
+        changing_operand = Math.sqrt(val).toString().substring(0, 9).split("");
+    }
+    return {
+        ...result_state,
+        [`operand_${result_state.curr_stage + 1}`]: changing_operand,
+        display_text: joinOpearandArray(changing_operand)
+    };
+}
+
+function negateOperand(result_state) {
+    let changing_operand = [...result_state[`operand_${result_state.curr_stage + 1}`]];
+    let sign_negated = true;
+    if (changing_operand[0] === "-") {
+        sign_negated = false;
+        changing_operand.shift();
+    } else {
+        changing_operand.unshift("-");
+    }
+
+    let state = {
+        ...result_state,
+        sign_negated,
+        [`operand_${result_state.curr_stage + 1}`]: changing_operand,
+        display_text: joinOpearandArray(changing_operand)
+    };
+
+    return state;
+}
+
+function memAction(type, result_state) {
+    let result = result_state.result;
+    let operand_1 = [...result_state.operand_1];
+    let operand_2 = [...result_state.operand_2];
+    let display_text = result_state.display_text;
+
+    if (result_state.memory_var) {
+        if (result_state.operand_1 && result_state.operand_1.length > 0 && result_state.operand_1.toString !== "-") {
+            result = (type === 'add') ? result_state.memory_var + parseFloat(operand_1.join("")) : parseFloat(operand_1.join("")) - result_state.memory_var;
+            operand_1 = result.toString().substring(0, 9).split("");
+            operand_2 = [];
+            display_text = result;
+        }
+    }
+    return {
+        ...result_state,
+        operand_1,
+        operand_2,
+        result,
+        display_text,
+    };
+}
+
+function compute(result_state) {
+    let result = result_state.result;
+    let display_text = result_state.display_text;
+    let message = result_state.message;
+    let operand_1 = [...result_state.operand_1];
+    let operand_2 = [...result_state.operand_2];
+    let var_1 = parseFloat(operand_1.join(""));
+    let var_2 = parseFloat(operand_2.join(""));
+    let error = false;
+
+    if (var_1 && var_2 && operand_1 && result_state.operator && operand_2) {
+        switch (result_state.operator) {
+            case operations.ADDITION:
+                result = var_1 + var_2;
+                break;
+
+            case operations.SUBSTRACTION:
+                result = var_1 - var_2;
+                break;
+
+            case operations.MULTIPLICATION:
+                result = var_1 * var_2;
+                break;
+
+            case operations.DIVISION:
+                if (var_2 !== 0) {
+                    result = var_1 / var_2;
+                } else {
+                    display_text = "error";
+                    message = "Cant divide by zero";
+                    error = true;
+                    operand_1 = [];
+                    operand_2 = [];
+                }
+                break;
+        }
+    }
+
+    if (!error && result) {
+        display_text = result;
+        operand_1 = result.toString().substring(0, 9).split("");
+        operand_2 = [];
+    }
+
+    return {
+        ...result_state,
+        operand_1,
+        operand_2,
+        result,
+        display_text,
+        message
+    };
+}
+
+export default function calculate(buttonName, operation, state) {
+    let result_state = { ...state };
+
+    //check if poweroff
+    if (!state.power) {
+        if (operation === operations.ALL_CLEAR) {
+            result_state.power = true;
+            result_state.display_text = 0;
+        } else {
+            result_state.message = "Power on the calculator first";
+        }
+    } else if (buttonName || buttonName === 0) {
+        switch (operation) {
+            case operations.POWER_OFF:
+                result_state = resetState(result_state, true);
+                result_state.power = false;
+                break;
+
+            case operations.ALL_CLEAR:
+                result_state = resetState(result_state, true);
+                break;
+
+            case operations.CLEAR:
+                result_state = resetState(result_state, false);
+                break;
+
+            case operations.DIGIT: {
+                let val = parseInt(buttonName, 10);
+                result_state = addDigit(result_state, val);
+                break;
+            }
+
+            case operations.FLOAT:
+                if ((result_state.curr_stage === 0 && result_state.operand_1.indexOf(".") === -1) || (result_state.curr_stage === 1 && result_state.operand_2.indexOf(".") === -1)) {
+                    result_state = addDigit(result_state, ".");
+                }
+                break;
+
+            case operations.MODULUS:
+                result_state = convertToPercentage(result_state);
+                break;
+
+            case operations.SQUARE_ROOT:
+                result_state = convertToSquareroot(result_state);
+                break;
+
+            case operations.SIGN_CHANGE:
+                result_state = negateOperand(result_state);
+                break;
+
+            case operations.MEM_RECORD: {
+                if (result_state.operand_1.length > 0 && result_state.operand_1.toString() !== '-') {
+                    result_state.memory_var = parseFloat(result_state.operand_1.join(""));
+                }
+                break;
+            }
+
+            case operations.MEM_CLEAR:
+                result_state.memory_var = undefined;
+                break;
+
+            case operations.MEM_ADD:
+                result_state = memAction('add', result_state);
+                break;
+
+            case operations.MEM_SUBSTRACT:
+                result_state = memAction('sub', result_state);
+                break;
+
+            case operations.COMPUTE:
+                result_state = compute(result_state);
+                break;
+
+            default:
+                result_state.curr_stage = 1;
+                if (result_state.operand_1.length > 0 && result_state.operand_2.length > 0 && result_state.operator) {
+                    result_state = compute(result_state);
+                }
+                result_state.operator = operation;
+                break;
+        }
+    }
+
+    return result_state;
 }
