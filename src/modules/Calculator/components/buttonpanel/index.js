@@ -12,7 +12,7 @@ class ButtonPanel extends Component {
         return (
             <div className="flex-column buttonPanel">
                 <div className="buttonRow flex-row flex-jsb flex-ac">
-                    <span className="font-sm full-flex lr-pad-15">SL-3005V</span>
+                    <span className="font-sm full-flex lr-pad-15 is-font-bold">SL-3005V</span>
                     <div className="flex-row flex-jse">
                         <Button clickHandler={this.handleClick} name="&radic;" operation="square_root" className="small"/>
                         <Button clickHandler={this.handleClick} name="OFF" operation="power_off" className="small"/>
@@ -48,7 +48,10 @@ class ButtonPanel extends Component {
                             <Button clickHandler={this.handleClick} name={3} operation="digit"/>
                         </div>
                         <div className="flex-row flex-jsb">
-                            <Button clickHandler={this.handleClick} name="AC" className="red" operation="all_clear"/>
+                            <div className="flex-column flex-ac is-relative">
+                                <Button clickHandler={this.handleClick} name="AC" className="red onBtn"   operation="all_clear"/>
+                                <span className="is-absolute help-text font-xs">ON</span>
+                            </div>
                             <Button clickHandler={this.handleClick} name={0} operation="digit"/>
                             <Button clickHandler={this.handleClick} name="." operation="float"/>
                             <Button clickHandler={this.handleClick} name="=" operation="compute"/>
