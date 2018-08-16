@@ -62,7 +62,7 @@ class Calculator extends Component {
         return (
             <div className="CalculatorContainer flex-column flex-center full-flex pad-30">
                 <ToastContainer autoClose={1500}/>
-                <div className="flex-column flex-jc calculator t-pad-5">
+                <div className="flex-column flex-jc calculator lr-pad-10 t-pad-20 b-pad-10">
                     <div className="shadows">
                         <div className="shadowLines leftBorderLine">&nbsp;</div>
                         <div className="shadowLines topBorderLine">&nbsp;</div>
