@@ -115,8 +115,8 @@ function compute(result_state) {
     let message = result_state.message;
     let operand_1 = [...result_state.operand_1];
     let operand_2 = [...result_state.operand_2];
-    let curr_stage = [...result_state.curr_stage];
-    let operator = [...result_state.operator];
+    let curr_stage = result_state.curr_stage;
+    let operator = result_state.operator;
     let var_1 = parseFloat(operand_1.join(""));
     let var_2 = parseFloat(operand_2.join(""));
     let error = false;
