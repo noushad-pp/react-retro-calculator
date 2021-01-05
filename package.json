@@ -32,7 +32,7 @@
   "author": "Noushad PP",
   "license": "MIT",
   "dependencies": {
-    "axios": "0.18.0",
+    "axios": "0.21.1",
     "classnames": "2.2.6",
     "history": "4.7.2",
     "object-assign": "4.1.1",
