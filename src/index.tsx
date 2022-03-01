@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from './App';
+import RetroCalculator from './retro-calculator/application/RetroCalculator';
 import reportWebVitals from './reportWebVitals';
 
-import './index.css';
+import './index.scss';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <RetroCalculator />
   </React.StrictMode>,
   document.getElementById('root')
 );

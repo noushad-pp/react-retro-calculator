@@ -1,0 +1,44 @@
+@import "../scss/main";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  @include tb-padding(20px);
+}
+
+.buttonTopRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modelText {
+    flex: 1;
+    @include lr-padding(15);
+    font-size: $font-size-sm;
+    font-weight: $font-bold;
+  }
+
+  .powerRow {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonRowBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  .onText {
+    //  is-absolute help-text font-xs"
+    position: absolute;
+    font-size: $font-size-xs;
+    bottom: -10px;
+  }
+}
