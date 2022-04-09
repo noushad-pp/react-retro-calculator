@@ -1,7 +1,7 @@
 import className from 'classnames';
 import React from 'react';
 
-import { OperationTypes } from '../../domain/constants';
+import { OperationTypes } from '../utils/constants';
 
 import styles from './Button.module.scss';
 

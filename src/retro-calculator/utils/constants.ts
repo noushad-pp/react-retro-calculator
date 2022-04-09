@@ -1,4 +1,5 @@
 export enum OperationTypes {
+  NO_OP = 'NOOP',
   POWER_OFF = 'POWER_OFF',
   ALL_CLEAR = 'ALL_CLEAR',
   CLEAR = 'CLEAR',
@@ -13,7 +14,16 @@ export enum OperationTypes {
   SUBTRACTION = 'SUBTRACTION',
   MULTIPLICATION = 'MULTIPLICATION',
   SIGN_CHANGE = 'SIGN_CHANGE',
-  DIGIT = 'DIGIT',
+  DIGIT_0 = 'DIGIT_0',
+  DIGIT_1 = 'DIGIT_1',
+  DIGIT_2 = 'DIGIT_2',
+  DIGIT_3 = 'DIGIT_3',
+  DIGIT_4 = 'DIGIT_4',
+  DIGIT_5 = 'DIGIT_5',
+  DIGIT_6 = 'DIGIT_6',
+  DIGIT_7 = 'DIGIT_7',
+  DIGIT_8 = 'DIGIT_8',
+  DIGIT_9 = 'DIGIT_9',
   FLOAT = 'FLOAT',
   COMPUTE = 'COMPUTE',
 }

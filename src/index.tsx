@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import RetroCalculator from './retro-calculator/application/RetroCalculator';
+import RetroCalculator from './retro-calculator/RetroCalculator';
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';

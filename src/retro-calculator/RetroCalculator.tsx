@@ -3,11 +3,9 @@ import React from 'react';
 import ButtonPanel from './components/ButtonPanel';
 import CalculatorDisplay from './components/CalculatorDisplay';
 
-import styles from '../RetroCalculator.module.scss';
+import styles from './RetroCalculator.module.scss';
 
 const RetroCalculatorComp: React.FC = () => {
-  const onButtonClick = () => ({});
-
   return (
     <div className={styles.container}>
       <div className={styles.calculator}>
@@ -25,10 +23,10 @@ const RetroCalculatorComp: React.FC = () => {
           </div>
         </div>
         <div className={styles.displayContainer}>
-          <CalculatorDisplay displayValue={0} isPoweredOn={true} hasMemory={false} />
+          <CalculatorDisplay />
         </div>
         <div className={styles.buttonPanelContainer}>
-          <ButtonPanel handleClick={onButtonClick} />
+          <ButtonPanel />
         </div>
       </div>
     </div>
