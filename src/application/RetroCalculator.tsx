@@ -1,11 +1,23 @@
+import { useMachine } from '@xstate/react';
 import React from 'react';
 
-import ButtonPanel from './components/ButtonPanel';
-import CalculatorDisplay from './components/CalculatorDisplay';
+import ButtonPanel from '../application/components/ButtonPanel';
+import CalculatorDisplay from '../application/components/CalculatorDisplay';
+import { OperationTypes } from '../domain/calculator.constants';
+import calculatorMachine from '../domain/calculator.machine';
+import { getActionFromOperationType } from '../domain/calculator.utils';
 
 import styles from './RetroCalculator.module.scss';
 
 const RetroCalculatorComp: React.FC = () => {
+  const [{ context }, sendEvent] = useMachine(calculatorMachine, { devTools: true });
+  const onButtonPressed = (operationType: OperationTypes) => {
+    const action = getActionFromOperationType(operationType);
+    // eslint-disable-next-line no-console
+    console.log({ operationType, action, context });
+    sendEvent(action.type, action.value);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.calculator}>
@@ -23,10 +35,10 @@ const RetroCalculatorComp: React.FC = () => {
           </div>
         </div>
         <div className={styles.displayContainer}>
-          <CalculatorDisplay />
+          <CalculatorDisplay display={context.display} isPowered={!!context.isPowered} isNegated={context.isNegated} />
         </div>
         <div className={styles.buttonPanelContainer}>
-          <ButtonPanel />
+          <ButtonPanel onButtonPressed={onButtonPressed} />
         </div>
       </div>
     </div>

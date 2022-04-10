@@ -1,10 +1,16 @@
+import { inspect } from '@xstate/inspect';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import RetroCalculator from './retro-calculator/RetroCalculator';
+import RetroCalculator from './application/RetroCalculator';
 import reportWebVitals from './reportWebVitals';
 
 import './index.scss';
+
+// X-State visualiser
+inspect({
+  iframe: false,
+});
 
 ReactDOM.render(
   <React.StrictMode>

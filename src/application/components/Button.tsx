@@ -1,19 +1,17 @@
 import className from 'classnames';
+import { OperationTypes } from 'domain/calculator.constants';
 import React from 'react';
-
-import { OperationTypes } from '../utils/constants';
 
 import styles from './Button.module.scss';
 
 type Props = {
-  name: string | number;
   operation: OperationTypes;
   onClick: (operation: OperationTypes) => void;
   type?: 'normal' | 'small' | 'red' | 'tall';
   withAddon?: boolean;
 };
 
-const ButtonComp: React.FC<Props> = ({ name, operation, onClick, type, withAddon }) => {
+const ButtonComp: React.FC<Props> = ({ operation, onClick, type, withAddon }) => {
   const onButtonClick = () => onClick(operation);
   const isRed = type === 'red';
   const isTall = type === 'tall';
@@ -28,7 +26,7 @@ const ButtonComp: React.FC<Props> = ({ name, operation, onClick, type, withAddon
         [styles.withAddon]: withAddon,
       })}
     >
-      <button onClick={onButtonClick}>{name}</button>
+      <button onClick={onButtonClick}>{operation}</button>
     </div>
   );
 };

@@ -2,17 +2,25 @@ import React from 'react';
 
 import styles from './CalculatorDisplay.module.scss';
 
-const CalculatorDisplayComp: React.FC = () => {
+type Props = {
+  isPowered: boolean;
+  isNegated: boolean;
+  display: string;
+};
+const CalculatorDisplayComp: React.FC<Props> = ({ display, isPowered, isNegated }) => {
   const hasMemory = false;
-  const hasPower = true;
-  const displayText = 0;
 
   return (
     <div className={styles.displayContainer}>
       <div className={styles.memory}>{hasMemory && <span>M</span>}</div>
       <div className={styles.display}>
-        {hasPower && <div className={styles.displayRow}>{displayText}</div>}
-        {!hasPower && <div className={styles.displayRow}>&nbsp;</div>}
+        {isPowered && (
+          <div className={styles.displayRow}>
+            {isNegated && <span>-</span>}
+            {display}
+          </div>
+        )}
+        {!isPowered && <div className={styles.displayRow}>&nbsp;</div>}
       </div>
     </div>
   );
