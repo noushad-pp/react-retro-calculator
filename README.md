@@ -24,6 +24,7 @@ It canbe represented as below:
 
 ```mermaid
 stateDiagram-v2
+    [*] --> Off
     Off --> Operand1: on AC button clicked
 
     Operand1 --> Off
