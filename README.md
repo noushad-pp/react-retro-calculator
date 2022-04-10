@@ -24,17 +24,23 @@ It canbe represented as below:
 
 ```mermaid
 stateDiagram-v2
-    off --> operand1: on AC button clicked
+    Off: Initial state
+    Operand1: Reading first operant
+    Operator: Reading operand
+    Operand2: Reading second operant
+    Resulr: compute the results
 
-    oprand1 --> off
-    oprand1 --> operator: on operands -> + - / * % √
+    Off --> Operand1: on AC button clicked
 
-    operator --> off
-    operator --> operand2: on digits/decimal
+    Oprand1 --> Off
+    Oprand1 --> operator: on operands -> + - / * % √
 
-    operand2 --> off
-    operand2 --> result: on equal symbol/operands
+    Operator --> Off
+    Operator --> Operand2: on digits/decimal
 
-    result --> operand1: on digits/decimal
-    result --> off
+    Operand2 --> Off
+    Operand2 --> Result: on equal symbol/operands
+
+    Result --> Operand1: on digits/decimal
+    Result --> Off
 ```
