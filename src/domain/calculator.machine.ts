@@ -1,38 +1,27 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { assign, createMachine } from 'xstate';
+import { createMachine } from 'xstate';
 
 import {
+  compute,
+  computePercentage,
+  operatorEntered,
   powerOff,
   reset,
   setDecimalPoint,
   setDefaultDisplay,
   setKeyAsDisplay,
   setOperator,
+  storeOperand1,
+  storeOperand2,
   toggleSign,
   turnCalculatorOn,
 } from './calculator.actions';
-import { ActionTypes, OperationTypes } from './calculator.constants';
-import { isMinus, isNotMinus, isNotZero, isZero, notDivideByZero } from './calculator.guards';
-import { CalculatorContext, Operands } from './calcutator.dto';
-
-function doMath(operand1: string, operand2: string, operator: Operands) {
-  switch (operator) {
-    case OperationTypes.ADDITION:
-      return +operand1 + +operand2;
-    case OperationTypes.SUBTRACTION:
-      return +operand1 - +operand2;
-    case OperationTypes.DIVISION:
-      return +operand1 / +operand2;
-    case OperationTypes.MULTIPLICATION:
-      return +operand1 * +operand2;
-    default:
-      return Infinity;
-  }
-}
+import { ActionTypes } from './calculator.constants';
+import { notDivideByZero } from './calculator.guards';
+import { CalculatorContext } from './calcutator.dto';
 
 const defaultContext: CalculatorContext = {
   isPowered: false,
-  isNegated: false,
   display: '0',
   operand1: undefined,
   operand2: undefined,
@@ -50,16 +39,16 @@ const calculatorMachine = createMachine<CalculatorContext>(
         on: {
           [ActionTypes.CLEAR_EVERYTHING]: [
             {
-              target: 'start',
+              target: 'operand1',
               actions: ['turnCalculatorOn'],
             },
           ],
           '*': 'alertOff',
         },
       },
-      start: {
+      operand1: {
         on: {
-          [ActionTypes.DIGIT_PRESSED]: {
+          [ActionTypes.DIGIT]: {
             actions: ['setKeyAsDisplay'],
           },
           [ActionTypes.NEGATE]: {
@@ -68,31 +57,19 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.DECIMAL_POINT]: {
             actions: ['setDecimalPoint'],
           },
-          [ActionTypes.POWER_OFF]: {
-            target: 'off',
-            actions: ['powerOff'],
-          },
-        },
-      },
-      operand1: {
-        on: {
           [ActionTypes.OPERATOR]: {
             target: 'operator_entered',
-            actions: ['recordOperator'],
+            actions: ['operatorEntered'],
           },
           [ActionTypes.PERCENTAGE]: {
-            target: 'result',
-            actions: ['storeResultAsOperand2', 'computePercentage'],
+            target: 'operand1',
+            actions: ['computePercentage', 'storeOperand1'],
           },
           [ActionTypes.CLEAR_ENTRY]: {
-            target: 'operand1',
             actions: ['setDefaultDisplay'],
           },
-          [ActionTypes.NEGATE]: {
-            actions: ['toggleSign'],
-          },
-          [ActionTypes.DECIMAL_POINT]: {
-            actions: ['setDecimalPoint'],
+          [ActionTypes.CLEAR_EVERYTHING]: {
+            actions: ['setDefaultDisplay'],
           },
           [ActionTypes.POWER_OFF]: {
             target: 'off',
@@ -108,9 +85,9 @@ const calculatorMachine = createMachine<CalculatorContext>(
               actions: 'setOperator',
             },
           ],
-          [ActionTypes.DIGIT_PRESSED]: {
+          [ActionTypes.DIGIT]: {
             target: 'operand2',
-            actions: ['setKeyAsDisplay', 'saveOperand2'],
+            actions: ['setDefaultDisplay', 'setKeyAsDisplay'],
           },
           [ActionTypes.DECIMAL_POINT]: {
             target: 'operand2',
@@ -118,6 +95,17 @@ const calculatorMachine = createMachine<CalculatorContext>(
           },
           [ActionTypes.NEGATE]: {
             actions: ['toggleSign'],
+          },
+          [ActionTypes.PERCENTAGE]: {
+            actions: ['computePercentage'],
+          },
+          [ActionTypes.CLEAR_ENTRY]: {
+            target: 'operand2',
+            actions: ['setDefaultDisplay'],
+          },
+          [ActionTypes.CLEAR_EVERYTHING]: {
+            target: 'operand1',
+            actions: ['setDefaultDisplay'],
           },
           [ActionTypes.POWER_OFF]: {
             target: 'off',
@@ -127,11 +115,25 @@ const calculatorMachine = createMachine<CalculatorContext>(
       },
       operand2: {
         on: {
+          [ActionTypes.DIGIT]: {
+            actions: ['setKeyAsDisplay'],
+          },
+          [ActionTypes.DECIMAL_POINT]: {
+            actions: ['setDecimalPoint'],
+          },
+          [ActionTypes.NEGATE]: {
+            actions: ['toggleSign'],
+          },
+          [ActionTypes.PERCENTAGE]: {
+            target: 'operand2',
+            actions: ['computePercentage', 'storeOperand2'],
+          },
           [ActionTypes.OPERATOR]: [
             {
               cond: 'notDivideByZero',
               target: 'operator_entered',
-              actions: ['storeResultAsOperand2', 'compute', 'storeResultAsOperand1', 'setOperator'],
+              // save the current value to operand 2, compute it and store it to operand 1
+              actions: ['storeOperand2', 'compute', 'storeOperand1', 'setOperator'],
             },
             {
               target: 'alert',
@@ -141,7 +143,8 @@ const calculatorMachine = createMachine<CalculatorContext>(
             {
               cond: 'notDivideByZero',
               target: 'result',
-              actions: ['storeResultAsOperand2', 'compute'],
+              // compute and store it to operand 1
+              actions: ['storeOperand2', 'compute', 'storeOperand1'],
             },
             {
               target: 'alert',
@@ -151,11 +154,9 @@ const calculatorMachine = createMachine<CalculatorContext>(
             target: 'operand2',
             actions: ['setDefaultDisplay'],
           },
-          [ActionTypes.NEGATE]: {
-            actions: ['toggleSign'],
-          },
-          [ActionTypes.DECIMAL_POINT]: {
-            actions: ['setDecimalPoint'],
+          [ActionTypes.CLEAR_EVERYTHING]: {
+            target: 'operand1',
+            actions: ['setDefaultDisplay'],
           },
           [ActionTypes.POWER_OFF]: {
             target: 'off',
@@ -165,20 +166,27 @@ const calculatorMachine = createMachine<CalculatorContext>(
       },
       result: {
         on: {
-          [ActionTypes.DIGIT_PRESSED]: {
+          [ActionTypes.DIGIT]: {
             target: 'operand1',
             actions: ['setKeyAsDisplay'],
           },
+          [ActionTypes.NEGATE]: {
+            actions: ['toggleSign'],
+          },
           [ActionTypes.PERCENTAGE]: {
-            target: 'result',
-            actions: ['storeResultAsOperand2', 'computePercentage'],
+            target: 'operand2',
+            actions: ['storeOperand2', 'computePercentage'],
           },
           [ActionTypes.OPERATOR]: {
             target: 'operator_entered',
-            actions: ['storeResultAsOperand1', 'recordOperator'],
+            actions: ['storeOperand1', 'setOperator'],
           },
           [ActionTypes.CLEAR_ENTRY]: {
-            target: 'start',
+            target: 'operand1',
+            actions: ['setDefaultDisplay'],
+          },
+          [ActionTypes.CLEAR_EVERYTHING]: {
+            target: 'operand1',
             actions: ['setDefaultDisplay'],
           },
           [ActionTypes.POWER_OFF]: {
@@ -194,7 +202,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
             return Promise.resolve();
           },
           onDone: {
-            target: 'start',
+            target: 'operand1',
             actions: ['reset'],
           },
         },
@@ -215,10 +223,6 @@ const calculatorMachine = createMachine<CalculatorContext>(
   },
   {
     guards: {
-      isMinus,
-      isNotMinus,
-      isZero,
-      isNotZero,
       notDivideByZero,
     },
     actions: {
@@ -228,38 +232,11 @@ const calculatorMachine = createMachine<CalculatorContext>(
       toggleSign,
       setDecimalPoint,
       setOperator,
-      recordOperator: assign({
-        operand1: (context) => context.display,
-        operator: (_context, event) => event.operator,
-      }),
-
-      computePercentage: assign({
-        display: (context, _event) => (+context.display / 100).toString(),
-      }),
-
-      compute: assign({
-        display: (context, _event) => {
-          const result = doMath(context.operand1!, context.operand2!, context.operator!);
-
-          // eslint-disable-next-line no-console
-          console.log(`doing calculation ${context.operand1} ${context.operator} ${context.operand2} = ${result}`);
-
-          return result.toString();
-        },
-      }),
-
-      storeResultAsOperand1: assign({
-        operand1: (context) => context.display,
-      }),
-
-      storeResultAsOperand2: assign({
-        operand2: (context) => context.display,
-      }),
-
-      saveOperand2: assign({
-        operand2: (context, _event) => context.display,
-      }),
-
+      operatorEntered,
+      storeOperand1,
+      storeOperand2,
+      compute,
+      computePercentage,
       reset,
       powerOff,
     },

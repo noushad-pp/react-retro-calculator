@@ -4,12 +4,10 @@ export type Operands =
   | OperationTypes.ADDITION
   | OperationTypes.SUBTRACTION
   | OperationTypes.DIVISION
-  | OperationTypes.MULTIPLICATION
-  | OperationTypes.SQUARE_ROOT;
+  | OperationTypes.MULTIPLICATION;
 
 export interface CalculatorContext {
   isPowered: boolean;
-  isNegated: boolean;
   display: string;
   operand1?: string;
   operand2?: string;

@@ -14,7 +14,7 @@ export const getActionFromOperationType = (operationType: OperationTypes): Calcu
     case OperationTypes.DIGIT_8:
     case OperationTypes.DIGIT_9: {
       return {
-        type: ActionTypes.DIGIT_PRESSED,
+        type: ActionTypes.DIGIT,
         value: { key: parseInt(operationType) },
       };
     }
@@ -36,8 +36,7 @@ export const getActionFromOperationType = (operationType: OperationTypes): Calcu
     case OperationTypes.ADDITION:
     case OperationTypes.SUBTRACTION:
     case OperationTypes.DIVISION:
-    case OperationTypes.MULTIPLICATION:
-    case OperationTypes.SQUARE_ROOT: {
+    case OperationTypes.MULTIPLICATION: {
       return {
         type: ActionTypes.OPERATOR,
         value: {

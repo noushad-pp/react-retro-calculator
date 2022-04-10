@@ -13,8 +13,6 @@ const RetroCalculatorComp: React.FC = () => {
   const [{ context }, sendEvent] = useMachine(calculatorMachine, { devTools: true });
   const onButtonPressed = (operationType: OperationTypes) => {
     const action = getActionFromOperationType(operationType);
-    // eslint-disable-next-line no-console
-    console.log({ operationType, action, context });
     sendEvent(action.type, action.value);
   };
 
@@ -35,7 +33,7 @@ const RetroCalculatorComp: React.FC = () => {
           </div>
         </div>
         <div className={styles.displayContainer}>
-          <CalculatorDisplay display={context.display} isPowered={!!context.isPowered} isNegated={context.isNegated} />
+          <CalculatorDisplay display={context.display} isPowered={!!context.isPowered} />
         </div>
         <div className={styles.buttonPanelContainer}>
           <ButtonPanel onButtonPressed={onButtonPressed} />
