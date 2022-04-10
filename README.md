@@ -36,6 +36,6 @@ stateDiagram-v2
     Operand2 --> Result: on equal symbol/operands
 
     Result --> Operand1: on digits/decimal
-    Result --> Operator: on digits/decimal
+    Result --> Operator: on operands
     Result --> Off
 ```
