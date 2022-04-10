@@ -1,0 +1,121 @@
+@import "scss/main";
+
+.container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+}
+
+.calculator {
+  padding: 12px;
+  z-index: 1;
+  position: relative;
+  background-color: tint($grey-3, 40%);
+  border-radius: 10px;
+  box-shadow: 5px 5px 5px shade($grey-3, 20%);
+
+  .shadows {
+    .leftBorderLine {
+      position: absolute;
+      width: 0;
+      left: 7px;
+      top: 0;
+      bottom: 10px;
+      box-shadow: 4px 0 10px 2px #fff;
+    }
+
+    .topBorderLine {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      left: 0;
+      top: -5px;
+      bottom: 0;
+      box-shadow: 0px 10px 15px 4px #fff;
+    }
+
+    .rightBorderLine {
+      position: absolute;
+      width: 1px;
+      right: 15px;
+      top: 5px;
+      bottom: 10px;
+      box-shadow: 10px 4px 15px #000;
+    }
+
+    .bottomBorderLine {
+      position: absolute;
+      height: 1px;
+      right: 15px;
+      left: -10px;
+      bottom: 15px;
+      box-shadow: 15px 8px 10px #333;
+    }
+  }
+}
+
+.solarContainer {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 5px;
+  padding-right: 10px;
+
+  .brandName {
+    flex: 1;
+    font-size: $font-size-lg;
+    font-weight: $font-bold;
+    padding-top: 10px;
+    padding-left: 10px;
+  }
+
+  .solarPanelContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+
+    .solarPanel {
+      flex: 1;
+      width: 110px;
+      height: 35px;
+      background-color: #261b19;
+      border: 3px $grey-1 solid;
+      border-radius: 5px;
+    }
+
+    .text {
+      font-size: $font-size-xs;
+    }
+  }
+}
+
+.displayContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+  border: 6px $grey-2 solid;
+  position: relative;
+
+  &::before {
+    position: absolute;
+    z-index: 1;
+    border-radius: 5px 5px 15px 15px;
+    content: "";
+    top: -10px;
+    left: -12px;
+    right: -10px;
+    bottom: -14px;
+    background: $grey-2;
+    border-left: 2px solid #e1e1e1;
+  }
+}
+
+.buttonPanelContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 0 5px 5px;
+}
