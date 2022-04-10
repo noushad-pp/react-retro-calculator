@@ -44,7 +44,7 @@ stateDiagram-v2
 ## Folder structure
 
 ```
-react-calculator
+React-Calculator
 │
 │───README.md
 │───tsconfig.json
@@ -65,7 +65,7 @@ react-calculator
 │       │───ButtonPanel
 │       └───Button
 │
-│───domain // business logic
+└───domain // business logic
     │───calculator.state.machine.ts
     │───calculator.guards.ts
     │───calculator.actions.ts
