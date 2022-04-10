@@ -1,6 +1,6 @@
 import { inspect } from '@xstate/inspect';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import RetroCalculator from './application/RetroCalculator';
 import reportWebVitals from './reportWebVitals';
@@ -8,15 +8,19 @@ import reportWebVitals from './reportWebVitals';
 import './index.scss';
 
 // X-State visualiser
-inspect({
-  iframe: false,
-});
+if (process.env.NODE_ENV !== 'production') {
+  inspect({
+    iframe: false,
+  });
+}
 
-ReactDOM.render(
+const container = document.getElementById('root');
+const root = createRoot(container!);
+
+root.render(
   <React.StrictMode>
     <RetroCalculator />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

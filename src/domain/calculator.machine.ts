@@ -9,7 +9,6 @@ import {
   memoryValueClear,
   memoryValueStore,
   memoryValueSubtract,
-  operatorEntered,
   powerOff,
   reset,
   setDecimalPoint,
@@ -55,7 +54,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
       operand1: {
         on: {
           [ActionTypes.DIGIT]: {
-            actions: ['setKeyAsDisplay'],
+            actions: ['setKeyAsDisplay', 'storeOperand1'],
           },
           [ActionTypes.NEGATE]: {
             actions: ['toggleSign'],
@@ -65,7 +64,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
           },
           [ActionTypes.OPERATOR]: {
             target: 'operator_entered',
-            actions: ['operatorEntered'],
+            actions: ['storeOperand1', 'setOperator'],
           },
           [ActionTypes.PERCENTAGE]: {
             target: 'operand1',
@@ -112,7 +111,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
           ],
           [ActionTypes.DIGIT]: {
             target: 'operand2',
-            actions: ['setDefaultDisplay', 'setKeyAsDisplay'],
+            actions: ['setDefaultDisplay', 'setKeyAsDisplay', 'storeOperand2'],
           },
           [ActionTypes.DECIMAL_POINT]: {
             target: 'operand2',
@@ -159,7 +158,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
       operand2: {
         on: {
           [ActionTypes.DIGIT]: {
-            actions: ['setKeyAsDisplay'],
+            actions: ['setKeyAsDisplay', 'storeOperand2'],
           },
           [ActionTypes.DECIMAL_POINT]: {
             actions: ['setDecimalPoint'],
@@ -311,7 +310,6 @@ const calculatorMachine = createMachine<CalculatorContext>(
       toggleSign,
       setDecimalPoint,
       setOperator,
-      operatorEntered,
       storeOperand1,
       storeOperand2,
       compute,

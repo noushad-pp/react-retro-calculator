@@ -55,11 +55,6 @@ export const setOperator = assign<CalculatorContext>({
   operator: (_context, event: any) => event.operator,
 });
 
-export const operatorEntered = assign<CalculatorContext, any>({
-  operand1: (context) => context.display,
-  operator: (_context, event) => event.operator,
-});
-
 export const storeOperand1 = assign<CalculatorContext>({
   operand1: (context) => context.display,
   operand2: () => undefined,
@@ -126,6 +121,7 @@ export const reset = assign<CalculatorContext>({
 export const powerOff = assign<CalculatorContext>({
   isPowered: () => false,
   display: () => '0',
+  memoryValue: () => undefined,
   operand1: () => undefined,
   operand2: () => undefined,
   operator: () => undefined,
