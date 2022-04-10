@@ -43,32 +43,31 @@ stateDiagram-v2
 
 ## Folder structure
 
-```mermaid
-gitGraph
-   src
-   branch src
-   checkout src
-   branch domain
-   checkout domain
-   branch application
-   checkout application
 ```
-
-```
-project
-│   README.md
-│   file001.txt
+react-calculator
 │
-└───folder1
-│   │   file011.txt
-│   │   file012.txt
+│───README.md
+│───tsconfig.json
+│───package.json
+│───eslint.json
+│
+│───application // contains application (react related code)
+│   │───scss
+│   │   └───theme. mixin, colors etc
 │   │
-│   └───subfolder1
-│       │   file111.txt
-│       │   file112.txt
-│       │   ...
+│   │───components
+│   │   │───Display
+│   │   │───ButtonPanel
+│   │   └───Button
+│   │
+│   └───components
+│       │───Display
+│       │───ButtonPanel
+│       └───Button
 │
-└───folder2
-│   file021.txt
-│   file022.txt
+│───domain // business logic
+    │───calculator.state.machine.ts
+    │───calculator.guards.ts
+    │───calculator.actions.ts
+    └───calculator.constants.ts
 ```
