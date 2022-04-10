@@ -33,7 +33,7 @@ stateDiagram-v2
     Off --> Operand1: on AC button clicked
 
     Oprand1 --> Off
-    Oprand1 --> operator: on operands -> + - / * % √
+    Operand1 --> Operator: on operands -> + - / * % √
 
     Operator --> Off
     Operator --> Operand2: on digits/decimal
