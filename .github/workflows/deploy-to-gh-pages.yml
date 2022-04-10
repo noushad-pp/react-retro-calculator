@@ -33,7 +33,7 @@ jobs:
         run: |
           yarn install:fixed
 
-      - name: Run the tests and generate coverage report
+      - name: Run the tests
         run: yarn test:no-watch
 
       - name: Build
@@ -42,5 +42,5 @@ jobs:
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_ACCESS_TOKEN }}
+          deploy_key: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
