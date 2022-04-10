@@ -40,3 +40,35 @@ stateDiagram-v2
     Result --> Operator: on operands
     Result --> Off
 ```
+
+## Folder structure
+
+```mermaid
+gitGraph
+   src
+   branch src
+   checkout src
+   branch domain
+   checkout domain
+   branch application
+   checkout application
+```
+
+```
+project
+│   README.md
+│   file001.txt
+│
+└───folder1
+│   │   file011.txt
+│   │   file012.txt
+│   │
+│   └───subfolder1
+│       │   file111.txt
+│       │   file112.txt
+│       │   ...
+│
+└───folder2
+│   file021.txt
+│   file022.txt
+```
