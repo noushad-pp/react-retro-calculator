@@ -27,7 +27,6 @@ stateDiagram-v2
     off --> operand1: on AC button clicked
 
     oprand1 --> off
-    oprand1 --> operand1: on digits/decimal
     oprand1 --> operator: on operands -> + - / * % √
 
     operator --> off
