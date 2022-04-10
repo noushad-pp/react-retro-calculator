@@ -92,6 +92,30 @@ export const compute = assign<CalculatorContext>({
   },
 });
 
+export const memoryValueStore = assign<CalculatorContext>({
+  memoryValue: (context) => context.display,
+});
+
+export const memoryValueClear = assign<CalculatorContext>({
+  memoryValue: () => undefined,
+});
+
+export const memoryValueAdd = assign<CalculatorContext>({
+  display: (context) => {
+    const val = parseInt(context.display) + parseInt(context.memoryValue || '0');
+
+    return limitDisplayLength(val.toString());
+  },
+});
+
+export const memoryValueSubtract = assign<CalculatorContext>({
+  display: (context) => {
+    const val = parseInt(context.display) - parseInt(context.memoryValue! || '0');
+
+    return limitDisplayLength(val.toString());
+  },
+});
+
 export const reset = assign<CalculatorContext>({
   display: () => '0',
   operand1: () => undefined,

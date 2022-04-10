@@ -5,6 +5,10 @@ import {
   compute,
   computePercentage,
   computeSqrt,
+  memoryValueAdd,
+  memoryValueClear,
+  memoryValueStore,
+  memoryValueSubtract,
   operatorEntered,
   powerOff,
   reset,
@@ -18,12 +22,13 @@ import {
   turnCalculatorOn,
 } from './calculator.actions';
 import { ActionTypes } from './calculator.constants';
-import { notDivideByZero } from './calculator.guards';
+import { hasMemoryValue, notDivideByZero } from './calculator.guards';
 import { CalculatorContext } from './calcutator.dto';
 
 const defaultContext: CalculatorContext = {
   isPowered: false,
   display: '0',
+  memoryValue: undefined,
   operand1: undefined,
   operand2: undefined,
   operator: undefined,
@@ -73,6 +78,21 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.CLEAR_ENTRY]: {
             actions: ['setDefaultDisplay'],
           },
+          [ActionTypes.MEMORY_RECORD]: {
+            actions: ['memoryValueStore'],
+          },
+          [ActionTypes.MEMORY_CLEAR]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueClear'],
+          },
+          [ActionTypes.MEMORY_ADD]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueAdd', 'storeOperand1'],
+          },
+          [ActionTypes.MEMORY_SUBSTRACT]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueSubtract', 'storeOperand1'],
+          },
           [ActionTypes.CLEAR_EVERYTHING]: {
             actions: ['setDefaultDisplay'],
           },
@@ -106,6 +126,21 @@ const calculatorMachine = createMachine<CalculatorContext>(
           },
           [ActionTypes.SQUARE_ROOT]: {
             actions: ['computeSqrt'],
+          },
+          [ActionTypes.MEMORY_RECORD]: {
+            actions: ['memoryValueStore'],
+          },
+          [ActionTypes.MEMORY_CLEAR]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueClear'],
+          },
+          [ActionTypes.MEMORY_ADD]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueAdd', 'storeOperand1'],
+          },
+          [ActionTypes.MEMORY_SUBSTRACT]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueSubtract', 'storeOperand1'],
           },
           [ActionTypes.CLEAR_ENTRY]: {
             target: 'operand2',
@@ -162,6 +197,21 @@ const calculatorMachine = createMachine<CalculatorContext>(
               target: 'alert',
             },
           ],
+          [ActionTypes.MEMORY_RECORD]: {
+            actions: ['memoryValueStore'],
+          },
+          [ActionTypes.MEMORY_CLEAR]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueClear'],
+          },
+          [ActionTypes.MEMORY_ADD]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueAdd', 'storeOperand1'],
+          },
+          [ActionTypes.MEMORY_SUBSTRACT]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueSubtract', 'storeOperand1'],
+          },
           [ActionTypes.CLEAR_ENTRY]: {
             target: 'operand2',
             actions: ['setDefaultDisplay'],
@@ -196,6 +246,21 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.OPERATOR]: {
             target: 'operator_entered',
             actions: ['storeOperand1', 'setOperator'],
+          },
+          [ActionTypes.MEMORY_RECORD]: {
+            actions: ['memoryValueStore'],
+          },
+          [ActionTypes.MEMORY_CLEAR]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueClear'],
+          },
+          [ActionTypes.MEMORY_ADD]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueAdd', 'storeOperand1'],
+          },
+          [ActionTypes.MEMORY_SUBSTRACT]: {
+            cond: 'hasMemoryValue',
+            actions: ['memoryValueSubtract', 'storeOperand1'],
           },
           [ActionTypes.CLEAR_ENTRY]: {
             target: 'operand1',
@@ -238,9 +303,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
     },
   },
   {
-    guards: {
-      notDivideByZero,
-    },
+    guards: { notDivideByZero, hasMemoryValue },
     actions: {
       turnCalculatorOn,
       setDefaultDisplay,
@@ -254,6 +317,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
       compute,
       computePercentage,
       computeSqrt,
+      memoryValueStore,
+      memoryValueClear,
+      memoryValueAdd,
+      memoryValueSubtract,
       reset,
       powerOff,
     },

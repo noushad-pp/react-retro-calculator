@@ -9,6 +9,7 @@ export type Operands =
 export interface CalculatorContext {
   isPowered: boolean;
   display: string;
+  memoryValue?: string;
   operand1?: string;
   operand2?: string;
   operator?: Operands;

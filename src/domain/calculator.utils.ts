@@ -80,6 +80,34 @@ export const getActionFromOperationType = (operationType: OperationTypes): Calcu
       };
     }
 
+    case OperationTypes.MEM_RECORD: {
+      return {
+        type: ActionTypes.MEMORY_RECORD,
+        value: {},
+      };
+    }
+
+    case OperationTypes.MEM_CLEAR: {
+      return {
+        type: ActionTypes.MEMORY_CLEAR,
+        value: {},
+      };
+    }
+
+    case OperationTypes.MEM_ADD: {
+      return {
+        type: ActionTypes.MEMORY_ADD,
+        value: {},
+      };
+    }
+
+    case OperationTypes.MEM_SUBTRACT: {
+      return {
+        type: ActionTypes.MEMORY_SUBSTRACT,
+        value: {},
+      };
+    }
+
     case OperationTypes.POWER_OFF: {
       return {
         type: ActionTypes.POWER_OFF,
