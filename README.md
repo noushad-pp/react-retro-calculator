@@ -24,12 +24,6 @@ It canbe represented as below:
 
 ```mermaid
 stateDiagram-v2
-    Off: Initial state
-    Operand1: Reading first operant
-    Operator: Reading operand
-    Operand2: Reading second operant
-    Result: compute the results
-
     Off --> Operand1: on AC button clicked
 
     Operand1 --> Off
