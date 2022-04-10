@@ -52,6 +52,13 @@ export const getActionFromOperationType = (operationType: OperationTypes): Calcu
       };
     }
 
+    case OperationTypes.SQUARE_ROOT: {
+      return {
+        type: ActionTypes.SQUARE_ROOT,
+        value: {},
+      };
+    }
+
     case OperationTypes.SIGN_CHANGE: {
       return {
         type: ActionTypes.NEGATE,

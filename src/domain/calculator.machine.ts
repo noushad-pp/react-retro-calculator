@@ -4,6 +4,7 @@ import { createMachine } from 'xstate';
 import {
   compute,
   computePercentage,
+  computeSqrt,
   operatorEntered,
   powerOff,
   reset,
@@ -65,6 +66,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
             target: 'operand1',
             actions: ['computePercentage', 'storeOperand1'],
           },
+          [ActionTypes.SQUARE_ROOT]: {
+            target: 'operand1',
+            actions: ['computeSqrt', 'storeOperand1'],
+          },
           [ActionTypes.CLEAR_ENTRY]: {
             actions: ['setDefaultDisplay'],
           },
@@ -99,6 +104,9 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.PERCENTAGE]: {
             actions: ['computePercentage'],
           },
+          [ActionTypes.SQUARE_ROOT]: {
+            actions: ['computeSqrt'],
+          },
           [ActionTypes.CLEAR_ENTRY]: {
             target: 'operand2',
             actions: ['setDefaultDisplay'],
@@ -127,6 +135,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.PERCENTAGE]: {
             target: 'operand2',
             actions: ['computePercentage', 'storeOperand2'],
+          },
+          [ActionTypes.SQUARE_ROOT]: {
+            target: 'operand1',
+            actions: ['computeSqrt', 'storeOperand2'],
           },
           [ActionTypes.OPERATOR]: [
             {
@@ -175,7 +187,11 @@ const calculatorMachine = createMachine<CalculatorContext>(
           },
           [ActionTypes.PERCENTAGE]: {
             target: 'operand2',
-            actions: ['storeOperand2', 'computePercentage'],
+            actions: ['storeOperand1', 'computePercentage'],
+          },
+          [ActionTypes.SQUARE_ROOT]: {
+            target: 'operand1',
+            actions: ['storeOperand1', 'computeSqrt'],
           },
           [ActionTypes.OPERATOR]: {
             target: 'operator_entered',
@@ -237,6 +253,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
       storeOperand2,
       compute,
       computePercentage,
+      computeSqrt,
       reset,
       powerOff,
     },

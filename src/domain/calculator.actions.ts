@@ -20,6 +20,8 @@ function doMath(operand1: string, operand2: string, operator: Operands) {
   }
 }
 
+const limitDisplayLength = (value: string) => value.slice(0, 8);
+
 export const turnCalculatorOn = assign<CalculatorContext>({
   isPowered: () => true,
   display: defaultDisplay,
@@ -37,7 +39,7 @@ export const setKeyAsDisplay = assign<CalculatorContext, any>({
     }
 
     // Display can only show 8 digits at a time
-    return `${context.display}${event.key}`.slice(0, 8);
+    return limitDisplayLength(`${context.display}${event.key}`);
   },
 });
 
@@ -68,17 +70,25 @@ export const storeOperand2 = assign<CalculatorContext>({
 });
 
 export const computePercentage = assign<CalculatorContext>({
-  display: (context, _event) => (+context.display / 100).toString(),
+  display: (context, _event) => limitDisplayLength((+context.display / 100).toString()),
+});
+
+export const computeSqrt = assign<CalculatorContext>({
+  display: (context, _event) => {
+    if (parseInt(context.display) <= 0) return defaultDisplay();
+
+    return limitDisplayLength(Math.sqrt(parseInt(context.display)).toString());
+  },
 });
 
 export const compute = assign<CalculatorContext>({
   display: (context, _event) => {
     const result = doMath(context.operand1!, context.operand2!, context.operator!);
     if (result.toString().split('.')[0].length > 8) {
-      return result.toExponential(2).slice(0, 8);
+      return limitDisplayLength(result.toExponential(2));
     }
 
-    return result.toString().slice(0, 8);
+    return limitDisplayLength(result.toString());
   },
 });
 
