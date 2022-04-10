@@ -28,11 +28,11 @@ stateDiagram-v2
     Operand1: Reading first operant
     Operator: Reading operand
     Operand2: Reading second operant
-    Resulr: compute the results
+    Result: compute the results
 
     Off --> Operand1: on AC button clicked
 
-    Oprand1 --> Off
+    Operand1 --> Off
     Operand1 --> Operator: on operands -> + - / * % √
 
     Operator --> Off
@@ -42,5 +42,6 @@ stateDiagram-v2
     Operand2 --> Result: on equal symbol/operands
 
     Result --> Operand1: on digits/decimal
+    Result --> Operator: on digits/decimal
     Result --> Off
 ```
