@@ -24,19 +24,22 @@ It canbe represented as below:
 
 ```mermaid
 stateDiagram-v2
+    direction LR
+
     [*] --> off
     off --> [operand1]: on AC button clicked
 
     oprand1 --> off
-    oprand1 --> operand1: on digits/decimal entering
-    oprand1 --> operator: on operands -> +-/*%√
+    oprand1 --> operand1: on digits/decimal
+    oprand1 --> operator: on operands -> + - / * % √
 
     operator --> off
-    operator --> operand2: on digits/decimal point
+    operator --> operand2: on digits/decimal
 
     operand2 --> off
-    operand2 --> result: on equal symbol/ other operands
+    operand2 --> result: on equal symbol/operands
 
-    result --> operand1: on digits/decimal point
+    result --> operand1: on digits/decimal
     result --> off
+    off --> [*]
 ```
