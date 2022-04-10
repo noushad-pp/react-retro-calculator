@@ -26,8 +26,7 @@ It canbe represented as below:
 stateDiagram-v2
     direction LR
 
-    [*] --> off
-    off --> [operand1]: on AC button clicked
+    off --> operand1: on AC button clicked
 
     oprand1 --> off
     oprand1 --> operand1: on digits/decimal
@@ -41,5 +40,4 @@ stateDiagram-v2
 
     result --> operand1: on digits/decimal
     result --> off
-    off --> [*]
 ```
