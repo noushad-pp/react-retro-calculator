@@ -37,5 +37,5 @@ export enum ActionTypes {
   NEGATE = 'NEGATE',
   CLEAR_ENTRY = 'CLEAR_ENTRY',
   EQUALS = 'EQUALS_PRESSED',
-  NO_OP = 'no_operation',
+  POWER_OFF = 'POWER_OFF',
 }

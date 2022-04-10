@@ -74,6 +74,13 @@ export const getActionFromOperationType = (operationType: OperationTypes): Calcu
       };
     }
 
+    case OperationTypes.POWER_OFF: {
+      return {
+        type: ActionTypes.POWER_OFF,
+        value: {},
+      };
+    }
+
     default: {
       return {
         type: ActionTypes.CLEAR_EVERYTHING,

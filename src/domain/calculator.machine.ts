@@ -2,6 +2,8 @@
 import { assign, createMachine } from 'xstate';
 
 import {
+  powerOff,
+  reset,
   setDecimalPoint,
   setDefaultDisplay,
   setKeyAsDisplay,
@@ -66,6 +68,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.DECIMAL_POINT]: {
             actions: ['setDecimalPoint'],
           },
+          [ActionTypes.POWER_OFF]: {
+            target: 'off',
+            actions: ['powerOff'],
+          },
         },
       },
       operand1: {
@@ -88,6 +94,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.DECIMAL_POINT]: {
             actions: ['setDecimalPoint'],
           },
+          [ActionTypes.POWER_OFF]: {
+            target: 'off',
+            actions: ['powerOff'],
+          },
         },
       },
       operator_entered: {
@@ -108,6 +118,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
           },
           [ActionTypes.NEGATE]: {
             actions: ['toggleSign'],
+          },
+          [ActionTypes.POWER_OFF]: {
+            target: 'off',
+            actions: ['powerOff'],
           },
         },
       },
@@ -143,6 +157,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.DECIMAL_POINT]: {
             actions: ['setDecimalPoint'],
           },
+          [ActionTypes.POWER_OFF]: {
+            target: 'off',
+            actions: ['powerOff'],
+          },
         },
       },
       result: {
@@ -162,6 +180,10 @@ const calculatorMachine = createMachine<CalculatorContext>(
           [ActionTypes.CLEAR_ENTRY]: {
             target: 'start',
             actions: ['setDefaultDisplay'],
+          },
+          [ActionTypes.POWER_OFF]: {
+            target: 'off',
+            actions: ['powerOff'],
           },
         },
       },
@@ -185,6 +207,7 @@ const calculatorMachine = createMachine<CalculatorContext>(
           },
           onDone: {
             target: 'off',
+            actions: ['reset'],
           },
         },
       },
@@ -237,12 +260,8 @@ const calculatorMachine = createMachine<CalculatorContext>(
         operand2: (context, _event) => context.display,
       }),
 
-      reset: assign<CalculatorContext>({
-        display: () => '0',
-        operand1: (_context, _event) => undefined,
-        operand2: () => undefined,
-        operator: () => undefined,
-      }),
+      reset,
+      powerOff,
     },
   }
 );

@@ -35,3 +35,20 @@ export const setOperator = assign<CalculatorContext>({
 export const setDecimalPoint = assign<CalculatorContext>({
   display: (context, _event) => (context.display.includes('.') ? context.display : `${context.display}.`),
 });
+
+export const reset = assign<CalculatorContext>({
+  isNegated: () => false,
+  display: () => '0',
+  operand1: () => undefined,
+  operand2: () => undefined,
+  operator: () => undefined,
+});
+
+export const powerOff = assign<CalculatorContext>({
+  isPowered: () => false,
+  isNegated: () => false,
+  display: () => '0',
+  operand1: () => undefined,
+  operand2: () => undefined,
+  operator: () => undefined,
+});
