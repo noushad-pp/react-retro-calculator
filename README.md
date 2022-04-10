@@ -1,5 +1,7 @@
 # React Retro online calculator
 
+![pipeline](https://github.com/noushad-pp/react-calculator/actions/workflows/deploy-to-gh-pages.yml/badge.svg)
+
 React calculator is an application developed using React-xstate-HTML5-CSS3-SASS frameworks which tries to implement a retro calculator functionalities and to host it online.
 
 # [Demo](https://noushad-pp.github.io/react-calculator)
