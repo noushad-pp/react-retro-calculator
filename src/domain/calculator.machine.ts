@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { createMachine, MachineConfig } from 'xstate';
-import { StateSchema } from 'xstate/lib/types';
+import { createMachine, MachineConfig, StateSchema } from 'xstate';
 
 import {
   compute,
@@ -22,8 +21,8 @@ import {
   turnCalculatorOn,
 } from './calculator.actions';
 import { ActionTypes } from './calculator.constants';
-import { hasMemoryValue, notDivideByZero } from './calculator.guards';
 import { CalculatorContext, CalculatorStateSchema } from './calculator.dto';
+import { hasMemoryValue, notDivideByZero } from './calculator.guards';
 
 const defaultContext: CalculatorContext = {
   isPowered: false,
@@ -38,7 +37,7 @@ export const calculatorMachineConfig: MachineConfig<CalculatorContext, StateSche
   id: 'calculatorMachine',
   context: defaultContext,
   strict: true,
-  initial: 'off',
+  initial: 'off' as any,
   states: {
     off: {
       on: {
