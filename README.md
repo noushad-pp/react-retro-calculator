@@ -67,9 +67,11 @@ React-Calculator
 └───domain // business logic
     │───calculator.state.machine.ts
     │───calculator.guards.ts
+    │───calculator.dto.ts
     │───calculator.actions.ts
     └───calculator.constants.ts
 ```
 
 ## TODO
-- Add tests
+
+-   Add tests
