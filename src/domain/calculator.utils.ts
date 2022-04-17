@@ -1,5 +1,5 @@
 import { ActionTypes, OperationTypes } from './calculator.constants';
-import { CalculatorEvent } from './calcutator.dto';
+import { CalculatorEvent } from './calculator.dto';
 
 export const getActionFromOperationType = (operationType: OperationTypes): CalculatorEvent => {
   switch (operationType) {

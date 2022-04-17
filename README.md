@@ -22,7 +22,7 @@ This also eliminates the need for a state management library like redux which mi
 to different states and corresponding actions to run and with extra checks using guards.
 This also helps to write tests easier.
 
-It canbe represented as below:
+It can be represented as below:
 
 ```mermaid
 stateDiagram-v2
@@ -62,10 +62,7 @@ React-Calculator
 │   │   │───ButtonPanel
 │   │   └───Button
 │   │
-│   └───components
-│       │───Display
-│       │───ButtonPanel
-│       └───Button
+│   └───RetroCalculator
 │
 └───domain // business logic
     │───calculator.state.machine.ts
@@ -73,3 +70,6 @@ React-Calculator
     │───calculator.actions.ts
     └───calculator.constants.ts
 ```
+
+## TODO
+- Add tests

@@ -15,6 +15,11 @@ export interface CalculatorContext {
   operator?: Operands;
 }
 
+export type CalculatorStates = 'off' | 'operand1' | 'operand2' | 'operator_entered' | 'result' | 'alertOff';
+export type CalculatorStateSchema = {
+  [K in keyof CalculatorStates]: Record<string, any>;
+};
+
 export type CalculatorEvent = {
   type: ActionTypes;
   value: {

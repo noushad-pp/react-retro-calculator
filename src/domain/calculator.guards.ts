@@ -1,5 +1,5 @@
 import { OperationTypes } from './calculator.constants';
-import { CalculatorContext } from './calcutator.dto';
+import { CalculatorContext } from './calculator.dto';
 
 export const not =
   (fn: any) =>

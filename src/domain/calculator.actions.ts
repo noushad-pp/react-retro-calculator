@@ -1,7 +1,7 @@
 import { assign } from 'xstate';
 
 import { OperationTypes } from './calculator.constants';
-import { CalculatorContext, Operands } from './calcutator.dto';
+import { CalculatorContext, Operands } from './calculator.dto';
 
 const defaultDisplay = () => '0';
 
