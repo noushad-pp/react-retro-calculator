@@ -73,5 +73,4 @@ React-Calculator
 ```
 
 ## TODO
-
 -   Add tests
