@@ -17,6 +17,7 @@
     "type": "git",
     "url": "https://github.com/noushad-pp/react-calculator"
   },
+  "homepage": "https://noushad-pp.github.io/react-retro-calculator/",
   "dependencies": {
     "@xstate/inspect": "^0.6.5",
     "@xstate/react": "^3.0.0",
